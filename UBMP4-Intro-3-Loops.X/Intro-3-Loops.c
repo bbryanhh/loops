@@ -51,9 +51,40 @@ int main(void)
             {
                 LED4 = 1;
             }
+            
+            if(SW2 == 0)
+        {
+            TonLED4 -= 1;
+        }
+
+        // Increase brightness
+        if(SW3 == 0)
+        {
+            TonLED4 += 1;
+        }
            
             __delay_us(20);
         }
+        
+          // Change pitch
+        if(SW4 == 0)
+        {
+            period -= 1;
+        }
+        
+        if(SW5 == 0)
+        {
+            period += 1;
+        }
+        
+        // Make a tone
+        for(unsigned char cycles = 50; cycles != 0; cycles--)
+        {
+            BEEPER = !BEEPER;
+            for(unsigned int p = period; p != 0; p--);
+        }
+        
+        
         LED4 = 0;
         
         if(PWMperiod == 128)
@@ -64,6 +95,8 @@ int main(void)
         {
             LED5 = 0;
         }
+        
+    
         
         // Activate bootloader if SW1 is pressed.
         if(SW1 == 0)
@@ -130,7 +163,8 @@ int main(void)
         
  *    What is an advantage of using a for loop instead of a while loop?
  * 
- * An advantage of using a for loop is a cleaner look and less use of lines
+ * An advantage of using a for loop is that you get a cleaner look, less use of 
+ * lines and it works the same as if you were using a while loop.
  * 
  * 6. The 'for' loop, above, redefines the PWMperiod variable in the 
  *    initialization statement: 'for(unsigned char PWMperiod = 255; ...'
@@ -195,8 +229,13 @@ int main(void)
  * 
  *    What variable type is period? How large a number can this variable hold?
  * 
+ * Period is a int. I think the variable value can hold up to 2147483647
+ * 
  * 8. Why is period copied to the local variable p inside the inner for loop?
  *    What would happen if the actual period variable was decremented instead?
+ * 
+ * If the variable was decremented then it would go down to the point and not 
+ * play anymore
  * 
  * Programming Activities
  * 
@@ -206,6 +245,8 @@ int main(void)
  *    pressing and holding SW3 will brighten the LED and keep it at maximum
  *    brightness.
  * 
+ * Okay
+ * 
  * 2. Modify your program to control the brightness of LED D5 using SW4 and SW5
  *    while using SW3 and SW2 to control LED D4. Hint: To ensure each LED can
  *    reach maximum brightness (100% PWM on-time), you'll have to perform both
@@ -213,10 +254,14 @@ int main(void)
  *    have access to an oscilloscope. If not, just light the other two LEDs and 
  *    compare the brightness of LEDs D4 and D5 to them.
  * 
+ * 
+ * 
  * 3. Rather than having lights suddenly turn on at full brightness, or motors
  *    turn on at full power, create a program that uses a for loop and your PWM
  *    code to make a 'soft-start' program that slowly increases the PWM on-time
  *    when you press a button. Can you make it turn off in a similar way?
+ * 
+ * 
  * 
  * 4. Make a program that creates an automated, electronic 'pulse', repeatedly
  *    brightening and dimming one or more LEDs.
